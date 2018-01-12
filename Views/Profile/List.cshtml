@@ -1,0 +1,72 @@
+﻿@model ProfileListViewModel
+@using System.Security
+
+<h2>Profile</h2>
+ Welcome @User.Identity.Name
+
+<br />
+<br />
+<div class="col-10">
+    <table class="table table-bordered ">
+        <thead>
+            <tr>
+                <th> UserId </th>
+                <th> Apellido </th>
+                <th> Nombre </th>
+                <th> Perfil</th>
+                <th> Sucursal</th>
+                <th> Activo</th>
+                <th> Action</th>
+                <th> Roles</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Profiles)
+            {
+                <tr>
+                    <td>@item.UserName</td>
+                    <td>@item.LastName</td>
+                    <td>@item.FirstName</td>
+                    <td>@item.Role</td>
+                    @foreach (var bra in Model.Branches)
+                    {
+                        @if(item.BranchId == bra.BranchId)
+                        {
+                            <td> @bra.Name</td>
+
+                        }
+                    }                   
+                        @if (@item.Activo == true)
+                        {
+                            <td>
+                                <label class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" checked="checked" disabled />
+                                    <span class="custom-control-indicator bg-primary"></span>
+                                </label>
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                <label class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" value="false" />
+                                    <span class="custom-control-indicator"></span>
+                                </label>
+                            </td>
+                        }
+
+                    <td>@Html.ActionLink("..Details", "UpdateProfile", "Profile", new {id = @item.ProfileId })</td>
+                    <td>@Html.ActionLink("..Roles", "RolesAssign", "Profile", new { id = @item.ProfileId })</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+@*<a href="@Url.Action("xxxxxxxxx", "Profile")" class="btn btn-warning">
+   ????????
+    <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+</a>*@
+
+

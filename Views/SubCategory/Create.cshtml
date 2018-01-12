@@ -1,0 +1,18 @@
+﻿@model SubCategoryCreateViewModel
+
+<h2>Create SubCategory of: @Model.CategoryName</h2>
+<br />
+<form asp-controller="SubCategory" asp-action="Create" method="post">
+    <div class="col-3">
+        <label for="validationDefault02">SubCategory Name</label>
+        <input asp-for="SubCategoryName" type="text" class="form-control" id="validationDefault02" placeholder="">
+    </div>
+    <div>
+        <input type="hidden" asp-for="CategoryId" />
+    </div>
+    <br />
+    <div>
+        <input type="Submit" class="btn btn-primary" value="Save" />
+    </div>
+</form>
+

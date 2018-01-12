@@ -1,0 +1,38 @@
+﻿@model CategoryDetailsViewModel
+
+<h3>Category Name: @Model.Name</h3>
+<p>Details: @Model.Details</p>
+
+<p>Total Products : @Model.Total</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th> Product Id </th>
+            <th> Name </th>
+            <th> Item </th>
+            <th> Action</th>        
+        </tr>
+    </thead>
+    @foreach (var item in Model.Products)
+    {
+        <tbody>
+            <tr>
+                <td>@item.ProductId</td>
+                <td>@item.Name</td>
+                <td></td>
+                <td>@Html.ActionLink("Edit..", "Update", "Product", new { id = item.ProductId })</td>
+            </tr>
+        </tbody>
+    }
+</table>
+
+<ul class="nav">
+    <li class="nav-item">
+        <a class="nav-link active" @Html.ActionLink("Add new product", "Create", "Product", new { catName = Model.Name }) </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" @Html.ActionLink("Back to Categories", "Index", "Home")</a>
+    </li>
+</ul>
+

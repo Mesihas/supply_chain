@@ -1,0 +1,128 @@
+﻿<div class="row">
+    <div>
+        <h3 class="pl-3">New Mail</h3>       
+    </div>
+</div>
+<div class="row">
+    <div class="col-8">
+        <hr style="height: 1px;">
+    </div>
+ </div>
+<div class="row pl-3">
+    <br />
+    <form class="form-inline">
+        <div class="form-group">
+            <label col-md-4> Select Destinatario &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
+            <select class="form-control pl-4" id="destinatario"></select>
+        </div>
+    </form>
+</div>
+<div class="row">
+    <div class="col-8">
+        <hr style="height: 1px;">
+    </div>
+</div>
+<div class="row">
+    <div class="col-4">
+        <div class="form-group">
+            <label for="exampleFormControlSelect1">Select CC</label>
+            <select style="overflow-y: auto;" multiple id="destinatarios" class="form-control"> </select>     
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="form-group">
+            <label for="exampleFormControlSelect1"> Unselect CC</label>
+            <select style="overflow-y: auto;" multiple id="mydestinatarios" class="form-control"></select>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-8">
+        <div class="form-group">
+            <label for="exampleFormControlInput1">Asunto</label>
+            <input type="text" class="form-control" id="asunto" placeholder="Asunto">
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlTextarea1">Mensaje</label>
+            <textarea style="overflow-y: auto;" class="form-control" id="mensaje" rows="5"></textarea>
+        </div>
+        <div>
+            <button class="btn btn-primary" id="enviar" onclick="SendMail('ReceiveMail')">Enviar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    jQuery(document).ready(function ($) {
+        getDestAjax('GetUsersMail');
+
+    });
+    //////////////////////////////////////////////////////
+    $("#destinatarios").click(function () {
+        $("#destinatarios option:selected").remove().appendTo($("#mydestinatarios"));
+    })
+    $("#mydestinatarios").click(function () {
+        $("#mydestinatarios option:selected").remove().appendTo($("#destinatarios"));
+    })
+
+    //////////////// Bring Users /////////////////////////////
+    function getDestAjax(action) {
+        $.ajax({
+            type: "POST",
+            url: action,
+            success: function (response) {
+                console.log(response);
+                $.each(response, function (i, d) {
+                    $('#destinatario').append('<option value="' + d.id + '">' + d.userName + '</option>');
+                    $('#destinatarios').append('<option value="' + d.id + '">' + d.userName + '</option>');
+                    $('#mydestinatarios').empty()
+                });
+            },
+            error: function () {
+                //   alert("Something went wrong call someone");
+            }
+        });
+    }
+
+    //////////////////////////// SEND MAIL /////////////////////////
+    function SendMail(action) {
+
+       
+        var val = $.map($('#mydestinatarios option'), function (e) { return e.value; });
+        var values = val.join(',');
+        
+        var asunto = $('#asunto').val();
+        var mensaje = $('#mensaje').val();
+        var dest = $('#destinatario').val();
+        // as a comma separated string
+        if (asunto == '' || mensaje == '') {
+            alert("Must complete all Fields");
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: action,
+            data: { CC: values, Asunto: asunto, Mensaje: mensaje, Dest: dest },
+            success: function (response) {
+                alert("Mensaje enviado");
+                Clean();
+            },
+            error: function (response) {
+                alert("Message sent but return error: " + response.status);
+               Clean();              
+            }
+        });
+
+    }
+
+    function Clean() {
+        $('#asunto').val('');
+        $('#mensaje').val('');
+        $('#destinatario').empty();
+        $('#destinatarios').empty();
+        getDestAjax('GetUsersMail');
+    }
+</script>
+
+

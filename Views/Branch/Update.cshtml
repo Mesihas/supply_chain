@@ -1,0 +1,28 @@
+﻿@model BranchUpdateViewModel
+<h3>Update Branch</h3>
+
+<form asp-controller="Branch" asp-action="Update" method="post">
+    <div class="col-3">
+        <label for="validationDefault02">Name</label>
+        <input asp-for="Name" type="text" class="form-control" id="validationDefault02" placeholder="">
+    </div>
+
+    <div class="col-3">
+        <label for="validationDefault02">Address</label>
+        <input asp-for="Address" type="text" class="form-control" id="validationDefault02" placeholder="">
+    </div>
+    <div class="col-3">
+        <label for="validationDefault02">Phone</label>
+        <input asp-for="Phone" type="text" class="form-control" id="validationDefault02" placeholder="">
+    </div>
+    <div>
+        <input type="hidden" asp-for="BranchId" />
+    </div>
+    <hr />
+    <br />
+    <div>
+        <input type="Submit" class="btn btn-primary" value="Save" />
+    </div>
+</form>
+
+ 

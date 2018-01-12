@@ -1,0 +1,66 @@
+﻿@model MailDetailViewModel
+
+<h5>Mail Details</h5>
+<div class="row">
+    <div class="col-6">
+        <div>
+            <label asp-for="From"></label>
+            <input asp-for="From" class="col-lg-4 form-control form-control-sm" />
+        </div>
+        <div>
+            <label asp-for="Fecha" ></label>
+            <div class="form-control form-control-sm">
+                @Model.Fecha.ToString("dd/MM/yyyy HH:mm")
+            </div>
+        </div>
+        <div>
+            <label asp-for="Subject"></label>
+            <input asp-for="Subject" class="form-control form-control-sm" />
+        </div>
+        <div>
+            <label asp-for="Body"></label>
+            <textarea asp-for="Body" rows="8" cols="40" class="form-control form-control-sm"></textarea>
+        </div>
+        <div>
+            <input type="hidden" asp-for="MailId" />
+        </div>
+        <div>
+            <input type="hidden" asp-for="mailcc" />
+        </div>
+
+    </div>
+</div>
+<br />
+<a href="@Url.Action("Index", "Mail", new { act = "false" })" class="btn btn-primary">
+    Back to Inbox
+    <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+</a>
+
+<a href="" class="btn btn-primary" onclick="MarkAsUnreadAjax('MarkAsUnread')" id="unread">
+   Mark as unread
+    <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+</a>
+<script>
+    jQuery(document).ready(function ($) {
+        /////Desapear Mark as unread boton in case is a CC mail
+        if ($('#mailcc').val() == "True") {
+            $('#unread').remove();
+        }
+        else {           
+        }
+    });
+    //////////////// Mark email as unread on database  /////////////////////////////
+    function MarkAsUnreadAjax(action) {
+        $.ajax({
+            type: "POST",
+            url: action,
+            data: { mailId: $('#MailId').val() },
+            success: function (response) {                          
+                alert("Mensaje Marcado como no leido");          
+            },
+            error: function () {
+            //    alert("Something went wrong call someone");
+            }
+        });
+    }
+</script>

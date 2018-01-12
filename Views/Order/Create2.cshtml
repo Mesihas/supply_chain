@@ -1,0 +1,46 @@
+﻿@model OrderCreate2ViewModel
+<h2>Create order for category: @Model.Category</h2>
+<p> Total products found: @Model.Total</p>
+<div class="row">
+    <div class="col-10">
+        <form asp-controller="Order" asp-action="Create2" method="post">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#Id </th>
+                        <th>Product Name </th>
+                        <th>Stock</th>
+                        <th>Quantity </th>
+                        <th>Obs</th>
+                    </tr>
+                </thead>
+                @foreach (var item in Model.Products)
+                {
+                   
+                    <tbody>
+                        <tr>
+                            <td>@item.ProductId</td>
+                            <td>@item.Name</td>
+                            <td> <input class="col-sm-4" asp-for="@item.ProductId" name="@item.ProductId" value=""/></td>
+                            <td> <input class="col-sm-4" asp-for="@item.ProductId" name="@item.ProductId" value="" /></td>
+                            <td> <input class="col-sm-8" type="text" asp-for="@item.ProductId" name="@item.ProductId" value="" /></td>
+                        </tr>
+                            
+                    </tbody>                  
+                }
+            </table>
+            <div>
+                <input type="hidden" asp-for="CategoryId" />
+            </div>
+            <hr />
+            <div>
+                <input type="submit" class="btn btn-danger" value="Create Order" />
+            </div>
+        </form>
+    </div>
+    <div class="col-6">
+    </div>
+</div>
+
+<hr />
+<br /><br />

@@ -1,0 +1,46 @@
+﻿@model ProductIndexViewModel
+<h2>Category: @Model.CategoryName</h2>
+<h2>Products found in : @Model.SubCategoryName </h2>
+<p> Total: @Model.Total</p>
+
+<div class="row">
+    <div class="col-6">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th> #Id </th>
+                    <th>Codigo </th>
+                    <th> Nombre</th>
+                    <th> Detalles</th>
+                    <th> Action</th>
+                </tr>
+            </thead>
+            @foreach (var item in Model.Products)
+            {
+                <tbody>
+                    <tr>
+                        <td>@item.ProductId</td>
+                        <td>@item.Codigo</td>
+                        <td>@item.Name</td>                        
+                        <td>@item.Details</td>
+                       <td>@Html.ActionLink("Edit..", "Update", "Product", new { prodId = item.ProductId })</td>
+                        @*<td>@Html.ActionLink("See Products..", "Index", "Product", new { id = item.SubCategoryId })</td>*@
+                    </tr>
+                </tbody>
+            }
+        </table>
+    </div>
+    <div class="col-1">
+
+    </div>
+</div>
+
+<a href="@Url.Action("Create", "Product", new { subCatId= @Model.SubCategoryId })" class="btn btn-primary">
+    Add new Product
+    <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+</a>
+<a href="@Url.Action("Index", "SubCategory", new { Id= @Model.CategoryId })" class="btn btn-primary">
+    Back to SubCategory
+    <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+</a>
+<br /><br /><br />

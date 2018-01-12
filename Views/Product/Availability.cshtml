@@ -1,0 +1,218 @@
+﻿@model ProductAvailabilityViewModel
+<div class="row">
+    <div class="col-4 form-inline">
+        <h3>Product Availability</h3>
+        <br />
+    </div>
+    <div class="col-6 form-inline">
+        <div class="form-group">
+            <label  col-sm-2 ><strong>Select Branch</strong> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
+            <select class="form-control pl-4" id="BranchId" onchange="CleanTables()"
+                    asp-items="@(new SelectList(Model.Branches ,"BranchId","Name"))"></select>
+        </div>     
+    </div>
+    <br />   
+</div>
+<div>
+    <hr style="height: 1px;">
+</div>
+<div class="row">
+    <div class="col-6">
+        <div class="form-group">
+            <label><strong>Select Category</strong></label>
+            <select class="form-control col-md-4" id="Category" onclick="getDataAjax('CategoryId' , 'AvailAyax')"
+                    asp-items="@(new SelectList(Model.Categories ,"CategoryId","Name"))">
+                <option value="0">------</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="form-group">
+            <label><strong>Select Sub Category</strong></label>
+            <select class="form-control col-md-4" id="subCat" onclick="getDataAjaxPro('subCategoryId' , 'AvailAyaxProd')">
+            </select>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-6">
+        <div>
+            <h4>Available Products</h4>
+            <table class="col-6 table table-striped" id="products_table"></table>
+        </div>
+    </div>
+    <div class="col-6">
+        <div>
+            <h4>Not Available Products</h4>
+            <table class="col-6 table table-striped" id="prod_not_avai_table"></table>
+        </div>
+    </div>
+ </div>
+    <script>
+        var $productId;
+        var $branchId;
+
+        $(document).ready(function () {
+            MakeUnAvailable();
+            MakeAvailable();
+        });
+
+        ////////////// CLICK EVENT TABLE AVAILABLE PRODUCTS //////////////////
+        function MakeAvailable() {
+            $("#products_table").unbind("click").on("click", "tr", function () {
+                productId = $(this).attr('id');
+                branchId = $("#BranchId").val();
+                $("#products_table").empty();
+                PostProdNotAvail(productId, 'MakeNotAvailable');
+                getDataAjaxPro('subCategoryId', 'AvailAyaxProd');
+            });
+        }
+        ////////////// CLICK EVENT TABLE UNAVAILABLE PRODUCTS //////////////////
+        function MakeUnAvailable() {
+            $("#prod_not_avai_table").unbind("click").on("click", "tr", function () {
+             //   alert($(this).attr("id"));
+                productId = $(this).attr('id');
+                branchId = $("#BranchId").val();
+                MakeProdAvail(productId, 'MakeAvailable');
+                $("#products_table").empty();
+                getDataAjaxPro('subCategoryId', 'AvailAyaxProd');
+            });
+        }
+        //////////////// MAKE PRODUCT AVAILABLE AGAIN ////////////////////////////////////////////////////////////////////////////////////////////////////
+        function MakeProdAvail(productId, action) {
+            $.ajax({
+                type: "POST",
+                url: action,
+                data: { prodId: productId, branchid: branchId },
+                success: function (response) {
+              //      alert("hello!!");
+                   ListProdNotAvail(branchId, 'ListNotAvailableByBranch');
+                },
+                error: function () {
+                    alert("Something went wrong call someone");
+                }
+            });
+        }
+        //////////////// POST NOT AVAILABLE PRODUCTS TO DATABASE //////////////////
+        function PostProdNotAvail(productId, action) {
+            $.ajax({
+                type: "POST",
+                url: action,
+                data: { prodId: productId, branchid: branchId },
+                success: function (response) {
+                    ListProdNotAvail(branchId, 'ListNotAvailableByBranch');
+                },
+                error: function () {
+                    alert("Something went wrong call someone");
+                }
+            });
+        }
+        ////////////////////////// LOAD NOT AVAILABLE PRODUCTS //////////////////
+        function ListProdNotAvail(branchId, action) {
+            $.ajax({
+                type: "POST",
+                url: action,
+                data: { branchid: $("#BranchId").val(), CategoryId: $("#Category").val(), subCategoryId: $("#subCat").val() },
+                success: function (response) {
+                    $("#prod_not_avai_table").empty();
+                    console.log(response);
+                    drawTbodyNotAvail();
+                    drawTableNotAvai(response);
+                },
+                error: function () {
+                    alert("Something went wrong call someone");
+                }
+            });
+        }
+        //////////////////////////// LOADS AND FILLS SUBCATEGORY DROPDOWN /////////////////////////
+        function getDataAjax(CategoryId, action) {
+            $.ajax({
+                type: "POST",
+                url: action,
+                data: { CategoryId: $("#Category").val() },
+                success: function (response) {
+                    $(subCat).empty();
+                    $(response).each(function () {
+                        $("<option />", {
+                            val: this.subCategoryId,
+                            text: this.subCategoryName
+                        }).appendTo(subCat);
+                    });
+                },
+                error: function () {
+                    alert("Something went wrong call the police");
+                }
+            });
+        }
+        //////////////////////////// FETCH PRODUCTS FOR A SUBCATEGORY AND FILLS TABLE /////////////////////////
+        function getDataAjaxPro(subCategoryId, action) {
+            $.ajax({
+                type: "POST",
+                url: action,
+                data: { subCategoryId: $("#subCat").val(), branchid: $("#BranchId").val() },
+                success: function (data) {
+                    if (data && data != "") {
+                        $("#products_table").empty();
+                        drawTbody();
+                        drawTable(data);
+                    }
+                    else {                   
+                    }
+                    ListProdNotAvail($("#BranchId").val(), 'ListNotAvailableByBranch');
+                },
+                error: function () {
+                    alert("Something went wrong call the Ratas");
+                }
+            });
+        }
+        //////////////////////////// CREATE AND FILL AVAILABLE PRODUCTS /////////////////////////
+        function drawTable(data) {
+            //      $(products_table).empty();
+            for (var i = 0; i < data.length; i++) {
+                drawRow(data[i]);
+            }
+            $("#products_table").append("</tbody>");
+            MakeAvailable();
+        }
+
+        function drawRow(rowData) {
+            var row = $("<tr id='" + rowData.productId + "'/>")
+            $("#products_table").append(row); //this will append tr element to table...
+            row.append($("<td>" + rowData.productId + "</td>"));
+            row.append($("<td>" + rowData.name + "</td>"));
+        }
+
+        function drawTbody() {
+            var tb = $("<thead><tr><th>Id</th><th>Name</th></thead><tbody>");
+            $("#products_table").append(tb);
+        }
+
+        //////////////////////////// CREATE AND FILL NOT AVAILABLE PRODUCTS /////////////////////////
+        function drawTbodyNotAvail() {
+            var tb = $("<thead><tr><th>Id</th><th>Name</th></thead><tbody>");
+            $("#prod_not_avai_table").append(tb);
+        }
+
+        function drawTableNotAvai(response) {
+            //     $("#prod_not_avai_table").empty();/////
+            for (var i = 0; i < response.length; i++) {
+                drawRowNotAvai(response[i]);
+            }
+            $("#prod_not_avai_table").append("</tbody>");////
+            MakeUnAvailable();
+        }
+
+        function drawRowNotAvai(rowData1) {
+            var row = $("<tr id='" + rowData1.productId + "'/>");
+            $("#prod_not_avai_table").append(row); //this will append tr element to table...
+            row.append($("<td>" + rowData1.productId + "</td>"));
+            row.append($("<td>" + rowData1.productName + "</td>"));
+        }
+
+        function CleanTables() {
+            $("#products_table").empty();
+            $("#prod_not_avai_table").empty();
+        }
+    </script>
+

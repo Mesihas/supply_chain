@@ -1,0 +1,102 @@
+﻿@model MailIndexViewModel
+
+<div class="row pb-3">
+    <div class="col-xl-12">
+        <h5 id="title">InBox</h5>
+    </div>
+</div>
+<div class="row pb-3">
+    <div class="col-6 align-items-center float-left">
+        Total Mails: @Model.Total
+    </div>
+    <div class="col-6">
+        <a href="@Url.Action("Index", "Mail", new { act = "true" })" class="" id="OldNew">
+            xx
+            <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+        </a>
+    </div>
+</div>
+<div>
+    <input type="hidden" asp-for="Act" />
+</div>
+<div class="row">
+    <div class="col-12">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>From</th>
+                    <th> Subject  </th>
+                    <th> Body </th>
+                    <th> Action </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.InBoxToMe)
+                {
+                    <tr>
+                        <td>@item.SenderName</td>
+                        <td>@item.Subject</td>
+                        <td>@item.Body</td>
+                        <td>@Html.ActionLink("Ver..", "Details", "Mail", new { mailId = item.MailId })</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<br />
+<div class="row pb-3">
+    <div class="col-xl-12">
+        <h5 id="titlecc">CC </h5>
+    </div>
+</div>
+<p>Total Mails:@Model.TotalCC</p>
+
+<div class="row">
+    <div class="col-12">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>From</th>
+                    <th> Subject  </th>
+                    <th> Body </th>
+                    <th> Action </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.InBoxCC)
+                {
+                    <tr>
+                        <td>@item.SenderName</td>
+                        <td>@item.Subject</td>
+                        <td>@item.Body</td>
+                        <td>@Html.ActionLink("...Ver", "Details", "Mail", new { mailIdcc = item.MailId })</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    ////Toggle botton to Old or New mail
+    jQuery(document).ready(function ($) {
+        if ($('#Act').val() == "false") {
+            $('#OldNew').text('Read Old Mail');
+            $("#OldNew").attr("href", "@Url.Action("Index", "Mail", new { act = "true" })");
+            $('#OldNew').addClass('btn btn-danger');
+            $('#title').text('InBox');
+            $('#title').addClass('alert alert-success ');
+            $('#titlecc').addClass('alert alert-success ');
+        }
+        else {
+            $('#OldNew').text('Read New Mail');
+            $("#OldNew").attr("href", "@Url.Action("Index", "Mail", new { act = "false" })");
+            $('#OldNew').addClass('btn btn-success');
+            $('#title').text('Old InBox');
+            $('#title').addClass('alert alert-danger');
+            $('#titlecc').addClass('alert alert-danger ');
+        }
+        $('#OldNew').addClass('float-right');
+    });
+</script>

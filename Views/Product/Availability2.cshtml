@@ -1,0 +1,71 @@
+﻿@model ProductAvailabilityViewModel
+<h4>Product Availability 2</h4>
+<h5>Branch: </h5><br />
+<div class="form-group">
+    <label>Select Category</label>
+    <select class="form-control col-md-2" asp-for="CategoryId" id="Category" onclick="getDataAjax('CategoryId' , 'AvailAyax')"
+            asp-items="@(new SelectList(Model.Categories ,"CategoryId","Name"))"></select>
+</div>
+<div class="form-group">
+    <label>Select Sub Category</label>
+    <select class="form-control col-md-2" id="subCat" onclick="getDataAjaxPro('subCategoryId' , 'AvailAyaxProd')"></select>
+</div>
+<div id="div1">
+</div>
+<script>
+    function getDataAjax(CategoryId, action) {
+        $.ajax({
+            type: "POST",
+            url: action,
+            data: { CategoryId: $("#Category").val() },
+            success: function (response) {
+                $(subCat).empty();
+                $(response).each(function () {
+                    $("<option />", {
+                        val: this.subCategoryId,
+                        text: this.subCategoryName
+                    }).appendTo(subCat);
+                });
+            },
+            error: function () {
+                alert("Something went wrong call the police");
+            }
+        });
+    }
+
+    function getDataAjaxPro(subCategoryId, action) {
+        $.ajax({
+            type: "POST",
+            url: action,
+            data: { subCategoryId: $("#subCat").val() },
+            success: function (data) {
+                $("#div1").empty();
+                $form = $('<form id="availability" asp-controller="Product" asp-action="AvailabilityPost" method="post">');
+                $form.append('<table class="col-6 table table-striped" id="products_table"></table>')
+                $form.append('<input type="submit" value="Submit form">');
+                $form.append('</form>');
+                $("#div1").append($form);
+
+                drawTable(data);
+            },
+            error: function () {
+                alert("Something went wrong call the Ambulance");
+            }
+        });
+    }
+
+    function drawTable(data) {
+        for (var i = 0; i < data.length; i++) {
+            drawRow(data[i]);
+        }
+    }
+
+    function drawRow(rowData) {
+        var row = $("<tr />")
+        $("#products_table").append(row); //this will append tr element to table...
+        row.append($("<td>" + rowData.productId + "</td>"));
+        row.append($("<td>" + rowData.name + "</td>"));
+        row.append($("<td> <input type='hidden' value='0' name='" + rowData.productId + "'></td>"));
+        row.append($("<td> <input type='checkbox' value='1' name='" + rowData.productId + "'></td>"));
+    }
+</script>

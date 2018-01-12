@@ -1,0 +1,40 @@
+﻿@model BranchIndexViewModel
+<h2>Branches</h2>
+<p> Total: @Model.Total</p>
+
+<div class="row">
+    <div class="col-6">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th> #Id </th>
+                    <th> Sucursal </th>
+                    <th> Direccion</th>
+                    <th> Telefono </th>
+                    <th> Action </th>
+                </tr>
+            </thead>
+            @foreach (var item in Model.Branches)
+            {
+                <tbody>
+                    <tr>
+                        <td>@item.BranchId</td>
+                        <td>@item.Name</td>
+                        <td>@item.Address</td>
+                        <td>@item.Phone</td>
+                        <td>@Html.ActionLink("Edit..", "Update", "Branch", new { id = item.BranchId })</td>
+                    </tr>
+                </tbody>
+            }
+        </table>
+    </div>
+    <div class="col-1">
+
+    </div>
+</div>
+
+<a href="@Url.Action("Create", "Branch")" class="btn btn-primary">
+    Add new Branch
+    <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+</a>
+<br /><br /><br />

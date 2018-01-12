@@ -1,0 +1,44 @@
+﻿@model SubCategoryIndexViewModel
+<h2>SubCategories of: @Model.CategoryName </h2>
+<p> Total: @Model.Total</p>
+
+<div class="row">
+    <div class="col-6">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th> #Id </th>
+                    <th> SubCat Name </th>
+                    <th> Action</th>
+                    <th> Products</th>
+
+                </tr>
+            </thead>
+            @foreach (var item in Model.SubCategories)
+            {
+                <tbody>
+                    <tr>
+                        <td>@item.SubCategoryId</td>
+                        <td>@item.SubCategoryName</td>
+                        <td>@Html.ActionLink("Edit..", "Update", "SubCategory", new { id = item.SubCategoryId })</td>
+                        <td>@Html.ActionLink("See Products..", "Index", "Product", new { id = item.SubCategoryId })</td>
+                    </tr>
+                </tbody>
+            }
+        </table>
+    </div>
+    <div class="col-1">
+
+    </div>
+</div>
+
+<a href="@Url.Action("Create", "SubCategory", new { id = @Model.CategoryId })" class="btn btn-primary">
+    Add new SubCategory
+    <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+</a>
+<a href="@Url.Action("Index", "Category")" class="btn btn-primary">
+    Back to Categories
+    <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+</a>
+
+<br /><br /><br />

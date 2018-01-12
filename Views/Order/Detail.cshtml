@@ -1,0 +1,41 @@
+﻿@model OrderDetailViewModel
+<h2>Orders</h2>
+<h5>Category: @Model.CategoryName</h5>
+<p>Branch: @Model.BranchName</p>
+<p>Total Products : @Model.Total</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th> Product Id </th>
+            <th> Name </th>
+            <th>Stock  </th>
+            <th> Qtity </th>
+            <th> Obs </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OrderDetails)
+        {
+            <tr>
+                <td>@item.ProductId</td>
+                @foreach (var prod in Model.Products)
+                {
+                    @if(item.ProductId == prod.ProductId)
+                    {
+                        <td>@prod.Name</td>
+                    }
+                }             
+                <td>@item.Stock</td>
+                <td>@item.Quantity</td>
+                <td>@item.ObsOrder</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<a href="@Url.Action("Index", "Order")" class="btn btn-primary">
+    Back to Orders
+    <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+</a>

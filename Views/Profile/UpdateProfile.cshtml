@@ -1,0 +1,130 @@
+﻿@model ProfileUpdateViewModel
+<h3>Update Profile</h3>
+<br />
+
+<form asp-controller="Profile" asp-action="UpdateProfile" method="post">
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label for="validationDefault01">Nombre</label>
+            <input  asp-for="FirstName" type="text" class="form-control" id="validationDefault01" placeholder=""  >
+            <small id="NombreHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="validationDefault02">Apellido</label>
+            <input asp-for="LastName" type="text" class="form-control" id="validationDefault02" placeholder=""  >
+        </div>
+    </div>
+    <div class="row">
+        @*<div class="col-3">
+            <label for="validationDefault01">Puesto</label>
+            <select class="form-control" asp-for="PuestoId"
+                    asp-items="@(new SelectList(Model.Puestos ,"PuestoId","PuestoName"))"></select>                      
+        </div>*@
+        <div class="col-3">
+            <label for="validationDefault02">Role</label>
+            <input asp-for="Role" type="text" class="form-control" id="validationDefault02" placeholder="">
+        </div>
+        <div class="col-3">
+            <label for="validationDefault02">Sucursal</label>
+            <select class="form-control" asp-for="BranchId"
+                    asp-items="@(new SelectList(Model.Branches ,"BranchId","Name"))"></select>           
+        </div>
+        <div class="col-3">
+                <label for="validationDefault01">Legajo</label>
+                <input asp-for="Legajo" type="text" class="form-control" id="validationDefault01" placeholder="">            
+        </div>
+        <div class="col-3 pt-4">
+            <label class="custom-control custom-checkbox">
+                <input asp-for="Activo" class="custom-control-input" />
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">Activo</span>
+            </label>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-3">
+            <label for="validationDefault02">FechaIngreso</label>
+            <input asp-for="FechaIngreso" type="text" class="form-control" id="validationDefault02" placeholder="" >
+        </div>
+        <div class="col-3">
+            <label for="validationDefault02">Birthday</label>
+            <input asp-for="Birthday" type="text" class="form-control" id="validationDefault02" placeholder="">
+        </div>
+        <div class="col-3">
+            <label for="validationDefault01">CUIL</label>
+            <input asp-for="CUIL" type="text" class="form-control" id="validationDefault01" placeholder="">
+        </div>
+        <div class="col-3">
+            <label for="validationDefault02">Nacionalidad</label>
+            <input asp-for="Nacionalidad" type="text" class="form-control" id="validationDefault02" placeholder="">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-3 pt-4">
+            <label class="custom-control custom-checkbox">
+                <input asp-for="Preocupacional" class="custom-control-input" />
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">Preocupacional</span>
+            </label>
+        </div>
+        <div class="col-3">
+            <label for="validationDefault02">VtoLibreta</label>
+            <input asp-for="VtoLibreta" type="text" class="form-control" id="validationDefault02" placeholder="" >
+        </div>  
+        <div class="col-3">
+            <label for="validationDefault01">EstadoCivil</label>
+            <input asp-for="EstadoCivil" type="text" class="form-control" id="validationDefault01" placeholder="">
+        </div>
+        <div class="col-3">
+            <label for="validationDefault02">Hijos</label>
+            <input asp-for="Hijos" type="text" class="form-control" id="validationDefault02" placeholder="">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label for="validationDefault01">Tel Mobil</label>
+            <input asp-for="TelMobil" type="text" class="form-control" id="validationDefault01" placeholder="" >
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="validationDefault02">LandLine</label>
+            <input asp-for="LandLine" type="text" class="form-control" id="validationDefault02" placeholder=""  >
+        </div>
+    </div>
+    <div class="row">
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label for="validationDefault03">Direccion</label>
+            <input asp-for="Direccion" type="text" class="form-control" id="validationDefault03" placeholder="City" >
+            <div class="invalid-feedback">
+                Please provide a valid city.
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <label for="validationDefault04">Localidad</label>
+            <input  asp-for="Localidad" type="text" class="form-control" id="validationDefault04" placeholder="State" >
+            <div class="invalid-feedback">
+                Please provide a valid state.
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <label for="validationDefault05">CP</label>
+            <input  asp-for="CP" type="text" class="form-control" id="validationDefault05" placeholder="Zip" >
+            <div class="invalid-feedback">
+                Please provide a valid zip.
+            </div>
+        </div>
+    </div>
+    <div>
+        <input type="hidden" asp-for="ProfileId" />
+    </div>
+    <hr />
+    <button class="btn btn-primary" type="submit">Guardar</button>
+</form>
+
+<br /><br />
+
+

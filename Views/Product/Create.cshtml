@@ -1,0 +1,31 @@
+﻿@model ProductCreateViewModel
+
+<p>New product for category: @Model.CategoryName</p>
+<p>New product for subcategory: @Model.SubCategoryName</p>
+
+<form asp-controller="Product" asp-action="Create" method="post">
+    <div class="col-3">
+        <label for="validationDefault02">Codigo</label>
+        <input asp-for="Codigo" type="text" class="form-control" id="validationDefault02" placeholder="">
+    </div>
+    <div class="col-3">
+        <label for="validationDefault02">Name</label>
+        <input asp-for="Name" type="text" class="form-control" id="validationDefault02" placeholder="">
+    </div>
+    <div class="col-3">
+        <label for="validationDefault02">Details</label>
+        <input asp-for="Details" type="text" class="form-control" id="validationDefault02" placeholder="">
+    </div>
+
+    <div>
+        <input type="hidden" asp-for="CategoryId" />
+    </div>
+    <div>
+        <input type="hidden" asp-for="SubCategoryId" />
+    </div>
+    <br />
+    <div>
+        <input type="submit"  class="btn btn-danger" value="Save" />
+    </div>
+</form>
+

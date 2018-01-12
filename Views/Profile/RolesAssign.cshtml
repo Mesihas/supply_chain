@@ -1,0 +1,65 @@
+﻿@model RolesAssignViewModel
+
+<h4>Roles assignmet</h4>
+<p>User: @Model.User</p>
+
+<br />
+
+    <div class="row">
+        <div class="col-3">
+            <table class="table table-bordered ">
+                <thead>
+                    <tr>
+                        <th> Current Roles</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var Roles in Model.Roles)
+                    {
+                        <tr>
+                            <td> @Roles</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <br />
+        
+            <div class="col-3">
+                <form asp-controller="Profile" asp-action="RolesAssign" method="post">
+                    <label for="validationDefault02"><strong>Add Role</strong></label>
+                    <select class="form-control" asp-for="rol" 
+                        asp-items="@(new SelectList(Model.RolesAvalilable))"></select>
+                    <input type="hidden" asp-for="Action" value="add" />
+                    <input type="hidden" asp-for="@Model.User" />
+                    <input type="hidden" asp-for="ProfileId" />  
+                    <br />
+                    <button class="btn btn-success" type="submit">Add</button>
+                 </form>
+          
+            </div>
+
+            <div class="col-3">
+                <form asp-controller="Profile" asp-action="RolesAssign" method="post">
+                    <label for="validationDefault02"><strong>Delete Role</strong></label>
+                    <select class="form-control" asp-for="rol" 
+                            asp-items="@(new SelectList(Model.Roles))"></select>
+                    <input type="hidden" asp-for="Action" value="remo" />
+                    <input type="hidden" asp-for="@Model.User" />
+                    <input type="hidden" asp-for="ProfileId" />                   
+                    <br />
+                    <button class="btn btn-danger" type="submit">Remove</button>
+                </form>
+            </div>     
+</div>
+<hr />
+
+<div class="col-3 alert alert-danger" role="alert">  
+    @Model.Message
+</div>
+
+<a href="@Url.Action("List", "Profile")" class="btn btn-warning">
+    Back to User list
+    <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+</a>
+

@@ -1,0 +1,198 @@
+﻿@using System.Security
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/lib/open-iconic/font/css/open-iconic-bootstrap.css" rel="stylesheet">
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row mt-2  align-items-center">
+            <div class="col-2">
+                <img src="~/images/unaltra2.png" width="200" height="80" class="d-inline-block align-top" alt="" />
+            </div>
+            <div class="col-10 ">
+                <div class="float-right">
+                    <a href="@Url.Action("", "")">
+                        <img src="~/images/mail_icon.png" width="35" height="35" />&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                    </a>
+                </div>
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <div class="float-right">
+                        @Html.ActionLink("login", "Login", "Account") |
+                        @Html.ActionLink("Register", "Register", "Account")&nbsp;&nbsp;&nbsp;&nbsp;
+                    </div>
+                }
+                else
+                {
+                    <div class="float-right">
+                        Welcome @User.Identity.Name  |                   
+                        @Html.ActionLink("Logout", "Logout", "Account")&nbsp;&nbsp;&nbsp;&nbsp;
+                    </div>
+                } 
+            </div>
+        </div>
+        <div class="row bg-secondary">
+            <br /><br />         
+        </div>
+        <div class="row">
+            <div class="col-2 mr-4">
+                <br />
+                @if (!User.Identity.IsAuthenticated)
+                {
+                }
+                else
+                {
+                    @if (User.IsInRole("Administrator") || User.IsInRole("Admin"))
+                    {
+                            <div class="btn-group-vertical" role="group" aria-label="Button group with nested dropdown">
+                                <div class="btn-group" role="group">
+                                    <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle text-left" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        <span class="oi oi-account-login" title="icon name" aria-hidden="true"></span>
+                                        Orders&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                        <a class="dropdown-item" href="@Url.Action("Index", "Order")"><span class="oi oi-document" title="icon name" aria-hidden="true"></span>List Orders</a>
+                                        <a class="dropdown-item" href="@Url.Action("Create", "Order")"><span class="oi oi-document" title="icon name" aria-hidden="true"></span>Create Order</a>
+                                        <a class="dropdown-item" href="@Url.Action("", "")"><span class="oi oi-document" title="icon name" aria-hidden="true"></span>Dispatch Order</a>
+                                        <a class="dropdown-item" href="@Url.Action("", "")"><span class="oi oi-document" title="icon name" aria-hidden="true"></span>Receive Order</a>
+                                        <a class="dropdown-item" href="@Url.Action("", "")"><span class="oi oi-pencil" title="icon name" aria-hidden="true"></span>Claims</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="btn-group-vertical" role="group" aria-label="Button group with nested dropdown">
+                                <div class="btn-group" role="group">
+                                    <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle text-left" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        <span class="oi oi-people" title="icon name" aria-hidden="true"></span>
+                                        Users&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                        <a class="dropdown-item" href="@Url.Action("Register", "Account")"><span class="oi oi-document" title="icon name" aria-hidden="true"></span>Register </a>
+                                        <a class="dropdown-item" href="@Url.Action("List", "Profile")"><span class="oi oi-list" title="icon name" aria-hidden="true"></span>List Users</a>
+                                        <a class="dropdown-item" href="@Url.Action("", "")"><span class="oi oi-key" title="icon name" aria-hidden="true"></span>--Change Password--</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="btn-group-vertical" role="group" aria-label="Button group with nested dropdown">
+                                <div class="btn-group" role="group">
+                                    <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle text-left" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        <span class="oi oi-tags" title="icon name" aria-hidden="true"></span>
+                                        Roles&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                        <a class="dropdown-item" href="@Url.Action("Addrole", "Account")"><span class="oi oi-plus" title="icon name" aria-hidden="true"></span>Add Role </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="btn-group-vertical" role="group" aria-label="Button group with nested dropdown">
+                                <div class="btn-group" role="group">
+                                    <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle text-left" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        <span class="oi oi-box" title="icon name" aria-hidden="true"></span>
+                                        Products&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                        <a class="dropdown-item" href="@Url.Action("Index", "Category")"><span class="oi oi-list-rich" title="icon name" aria-hidden="true"></span>Categories </a>
+                                        <a class="dropdown-item" href="@Url.Action("Availability", "Product")"><span class="oi oi-battery-full" title="icon name" aria-hidden="true"></span>Availability</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="btn-group-vertical" role="group" aria-label="Button group with nested dropdown">
+                                <div class="btn-group" role="group">
+                                    <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle text-left" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        <span class="oi oi-fork" title="icon name" aria-hidden="true"></span>
+                                        Branches&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                        <a class="dropdown-item" href="@Url.Action("Index", "Branch")"><span class="oi oi-document" title="icon name" aria-hidden="true"></span>Branches</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="btn-group-vertical" role="group" aria-label="Button group with nested dropdown">
+                                <div class="btn-group" role="group">
+                                    <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle text-left" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        <span class="oi oi-pie-chart" title="icon name" aria-hidden="true"></span>
+                                        Reports&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                        <a class="dropdown-item" href="@Url.Action("Charts", "Product")"><span class="oi oi-document" title="icon name" aria-hidden="true"></span>Reports</a>
+                                    </div>
+                                </div>
+                            </div>
+                                }
+                                @if (User.IsInRole("Sucursal") || User.IsInRole("Mail"))
+                                {
+                                    <div class="btn-group-vertical" role="group" aria-label="Button group with nested dropdown">             
+                                        <div class="btn-group" role="group">
+                                            <button id="btnGroupDrop2" type="button" class="btn btn-secondary dropdown-toggle text-left" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                <span class="oi oi-envelope-closed" title="icon name" aria-hidden="true"></span>
+                                                Mail&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            </button>
+                                            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                                <a class="dropdown-item" href="@Url.Action("Index", "Mail", new { act = "false" })"><span class="oi oi-inbox" title="icon name" aria-hidden="true"></span>Inbox </a>
+                                                <a class="dropdown-item" href="@Url.Action("NewMail", "Mail")"><span class="oi oi-pencil" title="icon name" aria-hidden="true"></span>New Mail</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                }
+                            </div>
+            <div class="col pt-3">
+                @RenderBody()
+            </div>
+        </div>
+        <!--  Footer Area-->
+        <div class="row mt-4 bg-dark">
+            <div class="col">
+                <div style="width: 20rem;">
+                    <div class="card-body text-light ">
+                        <h4 class="card-title">Privacy Policy</h4>
+                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div style="width: 20rem;">
+                    <div class="card-body text-light">
+                        <h4 class="card-title">Terms and Conditions</h4>
+                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div style="width: 20rem;">
+                    <div class="card-body text-light">
+                        <h4 class="card-title">Keep in touch</h4>
+                        <p class="card-text">
+                            With supporting text below as a natural lead-in to additional content.
+                            Ale=ale123//Admin=admin1//quilmes//qui123
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row bg-dark text-light justify-content-center">
+            <div class="col-12 justify-content-center">
+                Copyright&copy; Un' altra Volta 2018
+            </div>
+        </div>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/popper.js/dist/umd/popper.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/lib/Chart.js/dist/Chart.js"></script>
+    <script>
+        $('#OldNew').addClass('btn btn-danger');
+        $('#title').text('InBox');
+        $('#title').addClass('alert alert-success ');
+        $(function () {
+            $('#myTab a:last').tab('show')
+        })
+    </script>
+</body>
+</html>
+

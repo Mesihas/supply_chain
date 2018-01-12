@@ -1,0 +1,18 @@
+﻿@model OrderCreateViewModel
+
+<h3>Create New Order </h3>
+<hr />
+<form asp-controller="Order" asp-action="Create" method="post">
+    <div class="form-group">
+        <label >Select Category</label>
+        <select class="form-control col-md-2"  asp-for="CategoryId"
+                asp-items="@(new SelectList(Model.Categories ,"CategoryId","Name"))">            
+        </select>
+    </div>
+    <div >
+        <input type="submit" class="btn btn-primary" value="Next" />
+    </div>
+</form>
+
+<hr />
+<br /><br />

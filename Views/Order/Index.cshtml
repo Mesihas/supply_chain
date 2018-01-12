@@ -1,0 +1,60 @@
+﻿@model OrderIndexViewModel
+<h2>Orders</h2>
+<p> Total: @Model.Total</p>
+
+<div class="row">
+    <div class="col-12">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th > #Id </th>
+                    <th > Category </th>
+                    <th > State</th>
+                    <th > Branch </th>
+                    <th> Date </th>
+                    <th> Action </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Orders)
+                {
+                    <tr>
+                        <td>@item.OrderId</td>
+                        @foreach (var cat in Model.Categories)
+                        {
+                            if (@item.CategoryId == cat.CategoryId)
+                            {
+                                <td>@cat.Name</td>
+                            }
+                        }
+                        <td>@item.OrderStateId</td>
+
+                        @foreach (var bra in Model.Branches)
+                        {
+                            if (@item.BranchId == bra.BranchId)
+                            {
+                                <td>@bra.Name</td>
+                            }
+                        }
+                        <td>@item.Date.ToString("MM/dd/yyyy")</td>
+                        <td>@Html.ActionLink("...more", "Detail", "Order", new { orderId = item.OrderId })</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+ 
+</div>
+
+<a href="@Url.Action("Create", "Order")" class="btn btn-primary">
+    Add new Order
+    <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+</a>
+<br /><br /><br />
+
+
+
+      
+ 
+

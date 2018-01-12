@@ -1,0 +1,42 @@
+﻿@model ProductUpdateViewModel
+<h3>Update product for Subcategory: @Model.CategoryName</h3>
+
+<h3>Category Name: @Model.SubCategoryName</h3>
+<h1> </h1>
+<h3> Update Product</h3>
+
+<form asp-controller="Product" asp-action="Update" method="post">
+    <div class="col-3">
+        <label for="validationDefault02">Codigo</label>
+        <input asp-for="Codigo" type="text" class="form-control" id="validationDefault02" placeholder="">
+    </div>
+    <div class="col-3">
+        <label for="validationDefault02">Name</label>
+        <input asp-for="Name" type="text" class="form-control" id="validationDefault02" placeholder="">
+    </div>
+    <div class="col-3">
+        <label for="validationDefault02">Details</label>
+        <input asp-for="Details" type="text" class="form-control" id="validationDefault02" placeholder="">
+    </div>
+
+
+    <div>
+        <input type="hidden" asp-for="CategoryId" />
+    </div>
+    <div>
+        <input type="hidden" asp-for="SubCategoryId" />
+    </div>
+    <div>
+        <input type="hidden" asp-for="ProductId" />
+    </div>   
+    <br />
+    <div>
+        <input type="submit" class="btn btn-danger" value="Save" />
+    </div>
+</form>
+
+<hr />
+<a href="@Url.Action("Index", "Product", new { id= Model.SubCategoryId })" class="btn btn-primary">
+    Back to Subcategory: @Model.SubCategoryName
+    <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+</a>
